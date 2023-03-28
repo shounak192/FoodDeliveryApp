@@ -24,7 +24,9 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.example.fooddeliveryapp.dto.FoodDto;
 import com.example.fooddeliveryapp.dto.HotelDto;
+import com.example.fooddeliveryapp.models.Food;
 import com.example.fooddeliveryapp.models.Hotel;
 import com.example.fooddeliveryapp.service.implementations.HotelServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -47,6 +49,12 @@ class HotelControllerTest {
 
 	private List<Hotel> hotelList = new ArrayList<>();
 
+	private FoodDto foodDto;
+
+	private Food food;
+
+	private List<Food> foodList = new ArrayList<>();
+
 	@Autowired
 	private HotelControllerTest(MockMvc mockMvc, ObjectMapper objectMapper) {
 		super();
@@ -61,6 +69,12 @@ class HotelControllerTest {
 		hotel = new Hotel("name", "cuisine", new ArrayList<>());
 		hotel.setId(1);
 		hotelList.add(hotel);
+
+		foodDto = new FoodDto("name", new ArrayList<>());
+		foodDto.setId(1);
+		food = new Food("name", new ArrayList<>());
+		food.setId(1);
+		foodList.add(food);
 	}
 
 	@Test
@@ -100,9 +114,9 @@ class HotelControllerTest {
 
 	@Test
 	void addFoodTest() throws Exception {
-		
-		when(hotelService.addFood(1,1)).thenReturn(hotel);
-		mockMvc.perform(post("/hotel/addfood/{hotelId}/{foodId}", 1,1)).andExpect(status().isOk());
+
+		when(hotelService.addFood(1, 1)).thenReturn(hotel);
+		mockMvc.perform(post("/hotel/addfood/{hotelId}/{foodId}", 1, 1)).andExpect(status().isOk());
 	}
 
 	@Test
@@ -110,6 +124,12 @@ class HotelControllerTest {
 		
 		when(hotelService.removeFood(1,1)).thenReturn(hotel);
 		mockMvc.perform(delete("/hotel/removefood/{hotelId}/{foodId}", 1,1)).andExpect(status().isOk());
+	}
+
+	@Test
+	void findAllHotelsByCuisineType() throws Exception {
+		when(hotelService.findAllHotelsByCuisineType("cuisine")).thenReturn(hotelList);
+		mockMvc.perform(get("/hotel/viewall/{cuisineType}", "cuisine")).andExpect(status().isOk());
 	}
 
 }

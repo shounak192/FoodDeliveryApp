@@ -134,5 +134,12 @@ class HotelServiceTest {
 		when(foodRepository.findById(1)).thenReturn(Optional.ofNullable(food));
 		assertEquals(hotel, hotelService.removeFood(1, 1));
 	}
+	
+	@Test
+	void findAllHotelsByCuisineType() {
+		
+		when(hotelRepository.findAllByCuisineType("cuisine")).thenReturn(hotelList);
+		assertEquals(hotelList, hotelService.findAllHotelsByCuisineType("cuisine"));
+	}
 
 }

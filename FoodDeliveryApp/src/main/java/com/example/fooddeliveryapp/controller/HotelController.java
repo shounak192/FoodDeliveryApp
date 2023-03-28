@@ -81,5 +81,12 @@ public class HotelController {
 		Hotel hotel = hotelService.removeFood(hotelId, foodId);
 		return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);
 	}
+	
+	@GetMapping("/viewall/{cuisineType}")
+	public ResponseEntity<List<Hotel>> findAllHotelsByCuisineType(@PathVariable String cuisineType) {
+		
+		List<Hotel> hotelList = hotelService.findAllHotelsByCuisineType(cuisineType);
+		return new ResponseEntity<>(hotelList, HttpStatus.OK);
+	}
 
 }

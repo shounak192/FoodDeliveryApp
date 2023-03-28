@@ -13,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 public class Hotel {
@@ -23,11 +25,15 @@ public class Hotel {
 	private String name;
 	private String cuisineType;
 
+	/*
+	 * @JsonProperty-Write Only access allows to print only necessary hotel details
+	 * without its underlying food list of each hotel.
+	 */
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@JsonManagedReference
-	@ManyToMany( cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "hotel_food", joinColumns = {
-			@JoinColumn(name = "hotel_id", referencedColumnName = "id") }, inverseJoinColumns = 
-					@JoinColumn(name = "food_id", referencedColumnName = "id"))
+			@JoinColumn(name = "hotel_id", referencedColumnName = "id") }, inverseJoinColumns = @JoinColumn(name = "food_id", referencedColumnName = "id"))
 	private List<Food> foodList;
 
 	public Hotel() {
@@ -35,7 +41,7 @@ public class Hotel {
 
 	public Hotel(String name, String cuisineType, List<Food> foodList) {
 		super();
-		
+
 		this.name = name;
 		this.cuisineType = cuisineType;
 		this.foodList = foodList;

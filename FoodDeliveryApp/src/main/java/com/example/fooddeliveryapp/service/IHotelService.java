@@ -23,6 +23,8 @@ public interface IHotelService {
 	public Hotel addFood(Integer hotelId, Integer foodId);
 	
 	public Hotel removeFood(Integer hotelId, Integer foodId);
+
+	public List<Hotel> findAllHotelsByCuisineType(String cuisineType);
 	
 
 }

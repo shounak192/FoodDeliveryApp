@@ -18,14 +18,14 @@ import com.example.fooddeliveryapp.util.convertor.TakeoutConvertor;
 public class TakeoutServiceImpl implements ITakeoutService {
 
 	private ITakeoutRepository takeoutRepository;
-	
+
 	private TakeoutConvertor takeoutConvertor;
 
 	@Autowired
 	private TakeoutServiceImpl(ITakeoutRepository takeoutRepository, TakeoutConvertor takeoutConvertor) {
 		super();
 		this.takeoutRepository = takeoutRepository;
-		this.takeoutConvertor= takeoutConvertor;
+		this.takeoutConvertor = takeoutConvertor;
 	}
 
 	@Override

@@ -17,65 +17,57 @@ import com.example.fooddeliveryapp.util.ModelMapperGenerator;
 import com.example.fooddeliveryapp.util.convertor.FoodConvertor;
 
 @Service
-public class FoodServiceImpl implements IFoodService{
-	
+public class FoodServiceImpl implements IFoodService {
+
 	private IFoodRepository foodRepository;
-	
+
 	private FoodConvertor foodConvertor;
-	
+
 	@Autowired
 	private FoodServiceImpl(IFoodRepository foodRepository, FoodConvertor foodConvertor) {
 		super();
 		this.foodRepository = foodRepository;
-		this.foodConvertor= foodConvertor;
+		this.foodConvertor = foodConvertor;
 	}
 
 	@Override
 	public Food createFood(FoodDto foodDto) {
-		
+
 		Food food = foodConvertor.convert(foodDto);
 		return foodRepository.save(food);
 	}
 
 	@Override
 	public Food viewFood(Integer id) {
-		
-		Optional<Food> optionalFood = foodRepository.findById(id);
-		
-		if(optionalFood.isEmpty())
-			throw new FoodNotFoundException("Food not found");
-		
+
+		Optional<Food> optionalFood = Optional
+				.ofNullable(foodRepository.findById(id).orElseThrow(() -> new FoodNotFoundException("Food not found")));
 		return optionalFood.get();
 	}
 
 	@Override
 	public List<Food> viewAllFoods() {
-		
+
 		return foodRepository.findAll();
 	}
 
 	@Override
 	public Food updateFood(Integer id, FoodDto foodDto) {
-		
-		Optional<Food> optionalFood = foodRepository.findById(id);
-		if(optionalFood.isEmpty())
-			throw new FoodNotFoundException("Food not found");
-		
-		Food food = foodRepository.findById(id).get().setName(foodDto.getName());
+
+		Food food = foodRepository.findById(id).orElseThrow(() -> new FoodNotFoundException("Food not found"))
+				.setName(foodDto.getName());
 		return foodRepository.save(food);
-		
+
 	}
 
 	@Override
 	public Food deleteFood(Integer id) {
-		
-		Optional<Food> optionalFood = foodRepository.findById(id);
-		if (optionalFood.isEmpty())
-			throw new FoodNotFoundException("Food not found.");
 
+		Optional<Food> optionalFood = Optional
+				.ofNullable(foodRepository.findById(id).orElseThrow(() -> new FoodNotFoundException("Food not found")));
 		foodRepository.deleteById(id);
 		return optionalFood.get();
-		
+
 	}
 
 }

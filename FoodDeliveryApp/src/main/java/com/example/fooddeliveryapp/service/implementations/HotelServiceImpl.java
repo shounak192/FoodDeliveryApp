@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.fooddeliveryapp.dto.HotelDto;
+import com.example.fooddeliveryapp.exceptions.FoodNotFoundException;
 import com.example.fooddeliveryapp.exceptions.HotelNotFoundException;
 import com.example.fooddeliveryapp.models.Food;
 import com.example.fooddeliveryapp.models.Hotel;
@@ -27,7 +28,8 @@ public class HotelServiceImpl implements IHotelService {
 	private HotelConvertor hotelConvertor;
 
 	@Autowired
-	private HotelServiceImpl(IHotelRepository hotelRepository, IFoodRepository foodRepository, HotelConvertor hotelConvertor) {
+	private HotelServiceImpl(IHotelRepository hotelRepository, IFoodRepository foodRepository,
+			HotelConvertor hotelConvertor) {
 		super();
 		this.hotelRepository = hotelRepository;
 		this.foodRepository = foodRepository;
@@ -65,6 +67,10 @@ public class HotelServiceImpl implements IHotelService {
 	@Override
 	public Hotel updateHotel(Integer id, HotelDto hotelDto) {
 
+		Optional<Hotel> optionalHotel = hotelRepository.findById(id);
+		if (optionalHotel.isEmpty())
+			throw new HotelNotFoundException("Hotel not found.");
+
 		Hotel hotel = hotelRepository.findById(id).get().setName(hotelDto.getName())
 				.setCuisineType(hotelDto.getCuisineType());
 
@@ -85,9 +91,10 @@ public class HotelServiceImpl implements IHotelService {
 	@Override
 	public Hotel addFood(Integer hotelId, Integer foodId) {
 
-		Hotel hotel = hotelRepository.findById(hotelId).get();
+		Hotel hotel = hotelRepository.findById(hotelId)
+				.orElseThrow(() -> new HotelNotFoundException("Hotel not found"));
 
-		Food food = foodRepository.findById(foodId).get();
+		Food food = foodRepository.findById(foodId).orElseThrow(() -> new FoodNotFoundException("Food not found"));
 
 		food.getHotelList().add(hotel);
 		hotel.getFoodList().add(food);
@@ -102,13 +109,20 @@ public class HotelServiceImpl implements IHotelService {
 	@Override
 	public Hotel removeFood(Integer hotelId, Integer foodId) {
 
-		Hotel hotel = hotelRepository.findById(hotelId).get();
-		Food food = foodRepository.findById(foodId).get();
+		Hotel hotel = hotelRepository.findById(hotelId)
+				.orElseThrow(() -> new HotelNotFoundException("Hotel not found"));
+		Food food = foodRepository.findById(foodId).orElseThrow(() -> new FoodNotFoundException("Food not found"));
 
 		hotel.getFoodList().remove(food);
 		hotelRepository.save(hotel);
 
 		return hotel;
+	}
+
+	@Override
+	public List<Hotel> findAllHotelsByCuisineType(String cuisineType) {
+
+		return hotelRepository.findAllByCuisineType(cuisineType);
 	}
 
 }

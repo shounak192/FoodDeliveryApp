@@ -5,7 +5,6 @@ public class CustomerDto {
 	private Integer id;
 	private String username;
 	private String password;
-	private String address;
 
 	public CustomerDto(String username, String password) {
 		super();
