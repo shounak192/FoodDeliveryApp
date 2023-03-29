@@ -13,7 +13,7 @@ public class CustomerDto {
 	private String username;
 
 	@NotNull
-	@Pattern(regexp = "^[a-zA-Z0-9]{4,10}$", message = "Username must be alphanumeric of length between 4 and 10")
+//	@Pattern(regexp = "^[a-zA-Z0-9]{4,10}$", message = "Username must be alphanumeric of length between 4 and 10")
 	private String password;
 
 	public CustomerDto(String username, String password) {
