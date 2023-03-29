@@ -7,11 +7,9 @@ public class TakeoutDto {
 	private Integer hotelId;
 	private Integer foodId;
 
-	
-
 	public TakeoutDto(Integer customerId, Integer hotelId, Integer foodId) {
 		super();
-		
+
 		this.customerId = customerId;
 		this.hotelId = hotelId;
 		this.foodId = foodId;
@@ -54,7 +52,5 @@ public class TakeoutDto {
 		return "TakeoutDto [id=" + id + ", customerId=" + customerId + ", hotelId=" + hotelId + ", foodId=" + foodId
 				+ "]";
 	}
-
-	
 
 }

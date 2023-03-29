@@ -1,9 +1,19 @@
 package com.example.fooddeliveryapp.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 public class CustomerDto {
 
 	private Integer id;
+
+	@NotBlank
+	@Pattern(regexp = "^[a-zA-Z0-9]{3,10}$", message = "Username must be alphanumeric of length between 3 and 10")
 	private String username;
+
+	@NotNull
+	@Pattern(regexp = "^[a-zA-Z0-9]{4,10}$", message = "Username must be alphanumeric of length between 4 and 10")
 	private String password;
 
 	public CustomerDto(String username, String password) {

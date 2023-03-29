@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.fooddeliveryapp.dto.HotelDto;
 import com.example.fooddeliveryapp.models.Hotel;
 import com.example.fooddeliveryapp.service.IHotelService;
-import com.example.fooddeliveryapp.util.ModelMapperGenerator;
 
 @RestController
 @RequestMapping("/hotel")
@@ -82,10 +81,10 @@ public class HotelController {
 		return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);
 	}
 	
-	@GetMapping("/viewall/{cuisineType}")
-	public ResponseEntity<List<Hotel>> findAllHotelsByCuisineType(@PathVariable String cuisineType) {
+	@GetMapping("/viewall/{cuisine}")
+	public ResponseEntity<List<Hotel>> findAllHotelsByCuisine(@PathVariable String cuisine) {
 		
-		List<Hotel> hotelList = hotelService.findAllHotelsByCuisineType(cuisineType);
+		List<Hotel> hotelList = hotelService.findAllHotelsByCuisine(cuisine);
 		return new ResponseEntity<>(hotelList, HttpStatus.OK);
 	}
 

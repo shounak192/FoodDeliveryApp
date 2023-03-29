@@ -11,20 +11,25 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotBlank;
 
 public class HotelDto {
 
 	private Integer id;
+
+	@NotBlank(message = "Hotel name should not be blank.")
 	private String name;
-	private String cuisineType;
+
+	@NotBlank(message = "Cuisine Type should not be blank.")
+	private String cuisine;
 
 	private List<FoodDto> foodList;
 
-	public HotelDto(String name, String cuisineType, List<FoodDto> foodList) {
+	public HotelDto(String name, String cuisine, List<FoodDto> foodList) {
 		super();
-		
+
 		this.name = name;
-		this.cuisineType = cuisineType;
+		this.cuisine = cuisine;
 		this.foodList = foodList;
 	}
 
@@ -44,12 +49,12 @@ public class HotelDto {
 		this.name = name;
 	}
 
-	public String getCuisineType() {
-		return cuisineType;
+	public String getCuisine() {
+		return cuisine;
 	}
 
-	public void setCuisineType(String cuisineType) {
-		this.cuisineType = cuisineType;
+	public void setCuisine(String cuisine) {
+		this.cuisine = cuisine;
 	}
 
 	public List<FoodDto> getFoodList() {
@@ -62,7 +67,7 @@ public class HotelDto {
 
 	@Override
 	public String toString() {
-		return "HotelDto [id=" + id + ", name=" + name + ", cuisineType=" + cuisineType + ", foodList=" + foodList
+		return "HotelDto [id=" + id + ", name=" + name + ", cuisine=" + cuisine + ", foodList=" + foodList
 				+ "]";
 	}
 

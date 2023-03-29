@@ -2,9 +2,13 @@ package com.example.fooddeliveryapp.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+
 public class FoodDto {
 
 	private Integer id;
+
+	@NotBlank(message = "Food name should not be blank.")
 	private String name;
 
 	private List<HotelDto> hotelList;

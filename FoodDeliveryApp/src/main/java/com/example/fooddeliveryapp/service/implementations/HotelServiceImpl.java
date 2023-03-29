@@ -2,6 +2,10 @@ package com.example.fooddeliveryapp.service.implementations;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,7 @@ import com.example.fooddeliveryapp.repository.IFoodRepository;
 import com.example.fooddeliveryapp.repository.IHotelRepository;
 import com.example.fooddeliveryapp.service.IHotelService;
 import com.example.fooddeliveryapp.util.ModelMapperGenerator;
+import com.example.fooddeliveryapp.util.ObjectsValidator;
 import com.example.fooddeliveryapp.util.convertor.FoodConvertor;
 import com.example.fooddeliveryapp.util.convertor.HotelConvertor;
 
@@ -27,10 +32,13 @@ public class HotelServiceImpl implements IHotelService {
 
 	private HotelConvertor hotelConvertor;
 
+	private final ObjectsValidator<HotelDto> hotelValidator;
+
 	@Autowired
 	private HotelServiceImpl(IHotelRepository hotelRepository, IFoodRepository foodRepository,
 			HotelConvertor hotelConvertor) {
 		super();
+		this.hotelValidator = new ObjectsValidator<>();
 		this.hotelRepository = hotelRepository;
 		this.foodRepository = foodRepository;
 		this.hotelConvertor = hotelConvertor;
@@ -43,6 +51,10 @@ public class HotelServiceImpl implements IHotelService {
 
 	@Override
 	public Hotel createHotel(HotelDto hotelDto) {
+
+		Set<ConstraintViolation<HotelDto>> violations = hotelValidator.validate(hotelDto);
+		if (!violations.isEmpty())
+			throw new ConstraintViolationException(violations);
 
 		Hotel hotel = hotelConvertor.convert(hotelDto);
 		return hotelRepository.save(hotel);
@@ -67,12 +79,16 @@ public class HotelServiceImpl implements IHotelService {
 	@Override
 	public Hotel updateHotel(Integer id, HotelDto hotelDto) {
 
+		Set<ConstraintViolation<HotelDto>> violations = hotelValidator.validate(hotelDto);
+		if (!violations.isEmpty())
+			throw new ConstraintViolationException(violations);
+
 		Optional<Hotel> optionalHotel = hotelRepository.findById(id);
 		if (optionalHotel.isEmpty())
 			throw new HotelNotFoundException("Hotel not found.");
 
 		Hotel hotel = hotelRepository.findById(id).get().setName(hotelDto.getName())
-				.setCuisineType(hotelDto.getCuisineType());
+				.setCuisine(hotelDto.getCuisine());
 
 		return hotelRepository.save(hotel);
 	}
@@ -120,9 +136,9 @@ public class HotelServiceImpl implements IHotelService {
 	}
 
 	@Override
-	public List<Hotel> findAllHotelsByCuisineType(String cuisineType) {
+	public List<Hotel> findAllHotelsByCuisine(String cuisine) {
 
-		return hotelRepository.findAllByCuisineType(cuisineType);
+		return hotelRepository.findAllByCuisine(cuisine);
 	}
 
 }

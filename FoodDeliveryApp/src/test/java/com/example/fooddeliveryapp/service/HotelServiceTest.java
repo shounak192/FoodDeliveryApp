@@ -138,8 +138,8 @@ class HotelServiceTest {
 	@Test
 	void findAllHotelsByCuisineType() {
 		
-		when(hotelRepository.findAllByCuisineType("cuisine")).thenReturn(hotelList);
-		assertEquals(hotelList, hotelService.findAllHotelsByCuisineType("cuisine"));
+		when(hotelRepository.findAllByCuisine("cuisine")).thenReturn(hotelList);
+		assertEquals(hotelList, hotelService.findAllHotelsByCuisine("cuisine"));
 	}
 
 }

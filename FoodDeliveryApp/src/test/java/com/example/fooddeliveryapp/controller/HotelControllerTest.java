@@ -128,7 +128,7 @@ class HotelControllerTest {
 
 	@Test
 	void findAllHotelsByCuisineType() throws Exception {
-		when(hotelService.findAllHotelsByCuisineType("cuisine")).thenReturn(hotelList);
+		when(hotelService.findAllHotelsByCuisine("cuisine")).thenReturn(hotelList);
 		mockMvc.perform(get("/hotel/viewall/{cuisineType}", "cuisine")).andExpect(status().isOk());
 	}
 

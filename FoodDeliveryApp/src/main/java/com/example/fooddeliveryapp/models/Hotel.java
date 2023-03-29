@@ -23,7 +23,7 @@ public class Hotel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
-	private String cuisineType;
+	private String cuisine;
 
 	/*
 	 * @JsonProperty-Write Only access allows to print only necessary hotel details
@@ -39,11 +39,11 @@ public class Hotel {
 	public Hotel() {
 	}
 
-	public Hotel(String name, String cuisineType, List<Food> foodList) {
+	public Hotel(String name, String cuisine, List<Food> foodList) {
 		super();
 
 		this.name = name;
-		this.cuisineType = cuisineType;
+		this.cuisine = cuisine;
 		this.foodList = foodList;
 	}
 
@@ -65,12 +65,12 @@ public class Hotel {
 		return this;
 	}
 
-	public String getCuisineType() {
-		return cuisineType;
+	public String getCuisine() {
+		return cuisine;
 	}
 
-	public Hotel setCuisineType(String cuisineType) {
-		this.cuisineType = cuisineType;
+	public Hotel setCuisine(String cuisine) {
+		this.cuisine = cuisine;
 		return this;
 	}
 
@@ -85,7 +85,7 @@ public class Hotel {
 
 	@Override
 	public String toString() {
-		return "Hotel [id=" + id + ", name=" + name + ", cuisineType=" + cuisineType + ", foodList=" + foodList + "]";
+		return "Hotel [id=" + id + ", name=" + name + ", cuisine=" + cuisine + ", foodList=" + foodList + "]";
 	}
 
 }

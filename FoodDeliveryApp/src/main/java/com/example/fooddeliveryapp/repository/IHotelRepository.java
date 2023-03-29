@@ -10,6 +10,8 @@ import com.example.fooddeliveryapp.models.Hotel;
 @Repository
 public interface IHotelRepository extends JpaRepository<Hotel, Integer>{
 
-	List<Hotel> findAllByCuisineType(String cuisineType);
+	List<Hotel> findAllByCuisine(String cuisine);
+
+	
 
 }
