@@ -1,7 +1,6 @@
 package com.example.fooddeliveryapp.service.implementations;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import com.example.fooddeliveryapp.exceptions.TakeoutNotFoundException;
 import com.example.fooddeliveryapp.models.Takeout;
 import com.example.fooddeliveryapp.repository.ITakeoutRepository;
 import com.example.fooddeliveryapp.service.ITakeoutService;
-import com.example.fooddeliveryapp.util.ModelMapperGenerator;
 import com.example.fooddeliveryapp.util.convertor.TakeoutConvertor;
 
 @Service

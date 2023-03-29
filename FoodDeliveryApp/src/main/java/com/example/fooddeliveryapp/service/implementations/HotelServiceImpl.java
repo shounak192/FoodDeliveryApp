@@ -18,9 +18,7 @@ import com.example.fooddeliveryapp.models.Hotel;
 import com.example.fooddeliveryapp.repository.IFoodRepository;
 import com.example.fooddeliveryapp.repository.IHotelRepository;
 import com.example.fooddeliveryapp.service.IHotelService;
-import com.example.fooddeliveryapp.util.ModelMapperGenerator;
 import com.example.fooddeliveryapp.util.ObjectsValidator;
-import com.example.fooddeliveryapp.util.convertor.FoodConvertor;
 import com.example.fooddeliveryapp.util.convertor.HotelConvertor;
 
 @Service
