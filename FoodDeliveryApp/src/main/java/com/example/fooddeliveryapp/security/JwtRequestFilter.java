@@ -20,11 +20,16 @@ import com.example.fooddeliveryapp.service.implementations.CustomerServiceImpl;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-	@Autowired
 	private CustomerServiceImpl customerService;
 
-	@Autowired
 	private JwtUtil jwtUtil;
+
+	@Autowired
+	public JwtRequestFilter(CustomerServiceImpl customerService, JwtUtil jwtUtil) {
+		super();
+		this.customerService = customerService;
+		this.jwtUtil = jwtUtil;
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -53,7 +58,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			}
 		}
-		
+
 		filterChain.doFilter(request, response);
 
 	}

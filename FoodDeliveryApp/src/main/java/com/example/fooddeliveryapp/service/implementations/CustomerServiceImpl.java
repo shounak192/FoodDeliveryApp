@@ -9,9 +9,12 @@ import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.fooddeliveryapp.dto.CustomerDto;
@@ -21,6 +24,7 @@ import com.example.fooddeliveryapp.models.Customer;
 import com.example.fooddeliveryapp.repository.ICustomerRepository;
 import com.example.fooddeliveryapp.service.ICustomerService;
 import com.example.fooddeliveryapp.util.ObjectsValidator;
+import com.example.fooddeliveryapp.util.PasswordEncoderGenerator;
 import com.example.fooddeliveryapp.util.convertor.CustomerConvertor;
 
 @Service
@@ -47,11 +51,13 @@ public class CustomerServiceImpl implements ICustomerService, UserDetailsService
 		if (!violations.isEmpty())
 			throw new ConstraintViolationException(violations);
 
-		Customer customer = customerConvertor.convert(customerDto);
 		Optional<Customer> foundCustomer = customerRepository.findByUsername(customerDto.getUsername());
 		if (foundCustomer.isPresent())
 			throw new DuplicateCustomerException("Duplicate Customer");
 
+		PasswordEncoder encoder = PasswordEncoderGenerator.getEncoder();
+		Customer customer = customerConvertor.convert(customerDto);
+		customer.setPassword(encoder.encode(customer.getPassword()));
 		return customerRepository.save(customer);
 	}
 
@@ -61,14 +67,15 @@ public class CustomerServiceImpl implements ICustomerService, UserDetailsService
 		Set<ConstraintViolation<CustomerDto>> violations = customerValidator.validate(customerDto);
 		if (!violations.isEmpty())
 			throw new ConstraintViolationException(violations);
-
+		
+		PasswordEncoder encoder = PasswordEncoderGenerator.getEncoder();
 		Customer customer = customerConvertor.convert(customerDto);
-		Example<Customer> exampleCustomer = Example.of(customer);
-		Optional<Customer> foundCustomer = Optional.ofNullable(customerRepository.findOne(exampleCustomer)
-				.orElseThrow(() -> new CustomerNotFoundException("Customer not found")));
-
-		return foundCustomer.get();
-
+		Optional<Customer> foundCustomer = customerRepository.findByUsername(customerDto.getUsername());
+		
+		if(foundCustomer.isPresent() && encoder.matches(customer.getPassword(), foundCustomer.get().getPassword()))
+			return foundCustomer.get();
+		else
+			throw new CustomerNotFoundException("Customer not found");
 	}
 
 	@Override
@@ -94,7 +101,6 @@ public class CustomerServiceImpl implements ICustomerService, UserDetailsService
 		if (optionalCustomer.isEmpty()) {
 			throw new CustomerNotFoundException("Customer not found");
 		}
-
 		return new org.springframework.security.core.userdetails.User(optionalCustomer.get().getUsername(),
 				optionalCustomer.get().getPassword(), Collections.emptyList());
 	}

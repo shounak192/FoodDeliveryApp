@@ -15,14 +15,20 @@ import com.example.fooddeliveryapp.service.implementations.CustomerServiceImpl;
 @RestController
 public class AuthApiController {
 
-	@Autowired
 	private AuthenticationManager authenticationManager;
 
-	@Autowired
 	private JwtUtil jwtTokenUtil;
 
-	@Autowired
 	private CustomerServiceImpl customerService;
+
+	@Autowired
+	public AuthApiController(AuthenticationManager authenticationManager, JwtUtil jwtTokenUtil,
+			CustomerServiceImpl customerService) {
+		super();
+		this.authenticationManager = authenticationManager;
+		this.jwtTokenUtil = jwtTokenUtil;
+		this.customerService = customerService;
+	}
 
 	@PostMapping(value = "/authenticate")
 	public ResponseEntity<AuthenticationResponse> createAuthenticationToken(
@@ -31,6 +37,7 @@ public class AuthApiController {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 					authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+
 		} catch (BadCredentialsException e) {
 			throw new Exception("Incorrect username or password", e);
 		}

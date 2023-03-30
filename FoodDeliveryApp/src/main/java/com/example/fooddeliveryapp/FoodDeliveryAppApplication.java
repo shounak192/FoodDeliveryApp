@@ -19,9 +19,10 @@ public class FoodDeliveryAppApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext applicationContext = SpringApplication.run(FoodDeliveryAppApplication.class, args);
+		
 		ICustomerService customerService = applicationContext.getBean(CustomerServiceImpl.class);
-		PasswordEncoder encoder = PasswordEncoderGenerator.getEncoder();
-		customerService.registerCustomer(new CustomerDto("admin", encoder.encode("password")));
+//		PasswordEncoder passwordEncoder = PasswordEncoderGenerator.getEncoder();
+		customerService.registerCustomer(new CustomerDto("admin", "password"));
 		
 	}
 

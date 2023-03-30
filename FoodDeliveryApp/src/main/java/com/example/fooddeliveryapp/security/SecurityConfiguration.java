@@ -12,21 +12,29 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.example.fooddeliveryapp.service.ICustomerService;
 import com.example.fooddeliveryapp.service.implementations.CustomerServiceImpl;
+import com.example.fooddeliveryapp.util.PasswordEncoderGenerator;
 
 @Configuration
 public class SecurityConfiguration {
 
-	@Autowired
-	private CustomerServiceImpl customerService;
+	private ICustomerService customerService;
+
+	private JwtRequestFilter jwtRequestFilter;
 
 	@Autowired
-	private JwtRequestFilter jwtRequestFilter;
+	public SecurityConfiguration(ICustomerService customerService, JwtRequestFilter jwtRequestFilter) {
+		super();
+		this.customerService = customerService;
+		this.jwtRequestFilter = jwtRequestFilter;
+	}
 
 	@Bean
 	public AuthenticationManager getAuthenticationManager() {
@@ -37,8 +45,7 @@ public class SecurityConfiguration {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		http.cors().and().csrf().disable().authorizeRequests(autz -> autz.anyRequest().authenticated())
-				.authenticationManager(getAuthenticationManager()).formLogin().and()
-				.logout(logout -> logout.logoutUrl("/logout")).exceptionHandling().and().sessionManagement()
+				.authenticationManager(getAuthenticationManager()).exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().httpBasic();
 
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -58,14 +65,15 @@ public class SecurityConfiguration {
 
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {
-		return new BCryptPasswordEncoder();
+
+		return PasswordEncoderGenerator.getEncoder();
 	}
 
 	@Bean
 	public DaoAuthenticationProvider getAuthenticationProvider() {
 
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-		authenticationProvider.setUserDetailsService(customerService);
+		authenticationProvider.setUserDetailsService((UserDetailsService) customerService);
 		authenticationProvider.setPasswordEncoder(getPasswordEncoder());
 		authenticationProvider.setAuthoritiesMapper(new SimpleAuthorityMapper());
 		return authenticationProvider;
