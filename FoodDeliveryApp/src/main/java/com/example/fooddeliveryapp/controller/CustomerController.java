@@ -36,7 +36,7 @@ public class CustomerController {
 	public ResponseEntity<Customer> loginCustomer(@RequestBody CustomerDto customerDto) {
 
 		Customer customer = customerService.loginCustomer(customerDto);
-		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
+		return new ResponseEntity<>(customer, HttpStatus.OK);
 	}
 
 }

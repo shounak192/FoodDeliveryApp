@@ -1,11 +1,10 @@
 package com.example.fooddeliveryapp.exceptions;
 
-
-public class CustomerNotFoundException extends RuntimeException {
+public class InvalidCredentialsException extends RuntimeException {
 	
 	private final String message;
 
-	public CustomerNotFoundException(String message) {
+	public InvalidCredentialsException(String message) {
 		super();
 		this.message = message;
 	}
@@ -14,8 +13,6 @@ public class CustomerNotFoundException extends RuntimeException {
 	public String getMessage() {
 		return message;
 	}
-	
-	
 	
 	
 

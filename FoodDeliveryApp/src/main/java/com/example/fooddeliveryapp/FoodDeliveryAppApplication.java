@@ -4,14 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.fooddeliveryapp.dto.CustomerDto;
-import com.example.fooddeliveryapp.models.Customer;
 import com.example.fooddeliveryapp.security.SecurityConfiguration;
 import com.example.fooddeliveryapp.service.ICustomerService;
 import com.example.fooddeliveryapp.service.implementations.CustomerServiceImpl;
-import com.example.fooddeliveryapp.util.PasswordEncoderGenerator;
 
 @SpringBootApplication
 @Import(SecurityConfiguration.class)

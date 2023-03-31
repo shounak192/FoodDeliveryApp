@@ -33,35 +33,35 @@ public class TakeoutController {
 	public ResponseEntity<Takeout> placeOrder(@RequestBody TakeoutDto takeoutDto) {
 	
 		Takeout takeout = takeoutService.placeOrder(takeoutDto);
-		return new ResponseEntity<Takeout>(takeout, HttpStatus.OK);
+		return new ResponseEntity<>(takeout, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/cancel/{id}")
 	public ResponseEntity<Takeout> cancelOrder(@PathVariable Integer id) {
 		
 		Takeout takeout = takeoutService.cancelOrder(id);
-		return new ResponseEntity<Takeout>(takeout, HttpStatus.OK);
+		return new ResponseEntity<>(takeout, HttpStatus.OK);
 	}
 	
 	@GetMapping("/view/{id}")
 	public ResponseEntity<Takeout> viewOrder(@PathVariable Integer id) {
 		
 		Takeout takeout = takeoutService.viewOrder(id);
-		return new ResponseEntity<Takeout>(takeout, HttpStatus.OK);
+		return new ResponseEntity<>(takeout, HttpStatus.OK);
 	}
 	
 	@GetMapping("/viewall")
 	public ResponseEntity<List<Takeout>> viewAllOrders() {
 		
 		List<Takeout> takeoutList = takeoutService.viewAllOrders();
-		return new ResponseEntity<List<Takeout>>(takeoutList, HttpStatus.OK);
+		return new ResponseEntity<>(takeoutList, HttpStatus.OK);
 	}
 	
 	@GetMapping("/viewall/{customerId}")
 	public ResponseEntity<List<Takeout>> viewAllOrdersByCustomer(@PathVariable Integer customerId) {
 		
 		List<Takeout> takeoutList = takeoutService.viewAllOrdersByCustomer(customerId);
-		return new ResponseEntity<List<Takeout>>(takeoutList, HttpStatus.OK);
+		return new ResponseEntity<>(takeoutList, HttpStatus.OK);
 	}
 
 }

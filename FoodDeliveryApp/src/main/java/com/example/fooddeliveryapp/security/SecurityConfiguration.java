@@ -13,13 +13,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.example.fooddeliveryapp.service.ICustomerService;
-import com.example.fooddeliveryapp.service.implementations.CustomerServiceImpl;
 import com.example.fooddeliveryapp.util.PasswordEncoderGenerator;
 
 @Configuration
@@ -59,7 +57,7 @@ public class SecurityConfiguration {
 	 */
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().antMatchers("/customer/register").antMatchers("/customer/login")
+		return web -> web.ignoring().antMatchers("/customer/register").antMatchers("/customer/login")
 				.antMatchers("/hotel/create").antMatchers("/food/create").antMatchers("/authenticate");
 	}
 

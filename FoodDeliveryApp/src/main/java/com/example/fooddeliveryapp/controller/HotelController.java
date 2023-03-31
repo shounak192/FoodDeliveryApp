@@ -34,7 +34,7 @@ public class HotelController {
 	public ResponseEntity<Hotel> createHotel(@RequestBody HotelDto hotelDto) {
 
 		Hotel hotel = hotelService.createHotel(hotelDto);
-		return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);
+		return new ResponseEntity<>(hotel, HttpStatus.OK);
 
 	}
 
@@ -42,7 +42,7 @@ public class HotelController {
 	public ResponseEntity<Hotel> viewHotel(@PathVariable Integer id) {
 
 		Hotel hotel = hotelService.viewHotel(id);
-		return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);
+		return new ResponseEntity<>(hotel, HttpStatus.OK);
 
 	}
 
@@ -50,35 +50,35 @@ public class HotelController {
 	public ResponseEntity<List<Hotel>> viewAllHotels() {
 
 		List<Hotel> hotelList = hotelService.viewAllHotels();
-		return new ResponseEntity<List<Hotel>>(hotelList, HttpStatus.OK);
+		return new ResponseEntity<>(hotelList, HttpStatus.OK);
 	}
 
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Hotel> updateHotel(@PathVariable Integer id, @RequestBody HotelDto hotelDto) {
 
 		Hotel hotel = hotelService.updateHotel(id, hotelDto);
-		return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);
+		return new ResponseEntity<>(hotel, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Hotel> deleteHotel(@PathVariable Integer id) {
 
 		Hotel hotel = hotelService.deleteHotel(id);
-		return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);
+		return new ResponseEntity<>(hotel, HttpStatus.OK);
 	}
 
 	@PostMapping("/addfood/{hotelId}/{foodId}")
 	public ResponseEntity<Hotel> addFood(@PathVariable Integer hotelId, @PathVariable Integer foodId) {
 
 		Hotel hotel = hotelService.addFood(hotelId, foodId);
-		return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);
+		return new ResponseEntity<>(hotel, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/removefood/{hotelId}/{foodId}")
 	public ResponseEntity<Hotel> removeFood(@PathVariable Integer hotelId,@PathVariable Integer foodId) {
 		
 		Hotel hotel = hotelService.removeFood(hotelId, foodId);
-		return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);
+		return new ResponseEntity<>(hotel, HttpStatus.OK);
 	}
 	
 	@GetMapping("/viewall/{cuisine}")

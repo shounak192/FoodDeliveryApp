@@ -34,35 +34,35 @@ public class FoodController {
 	public ResponseEntity<Food> createFood(@RequestBody FoodDto foodDto) {
 
 		Food food = foodService.createFood(foodDto);
-		return new ResponseEntity<Food>(food, HttpStatus.OK);
+		return new ResponseEntity<>(food, HttpStatus.OK);
 	}
 
 	@GetMapping("/view/{id}")
 	public ResponseEntity<Food> viewFood(@PathVariable Integer id) {
 
 		Food food = foodService.viewFood(id);
-		return new ResponseEntity<Food>(food, HttpStatus.OK);
+		return new ResponseEntity<>(food, HttpStatus.OK);
 	}
 
 	@GetMapping("/viewall")
 	public ResponseEntity<List<Food>> viewAllFood() {
 
 		List<Food> foodList = foodService.viewAllFoods();
-		return new ResponseEntity<List<Food>>(foodList, HttpStatus.OK);
+		return new ResponseEntity<>(foodList, HttpStatus.OK);
 	}
 
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Food> updateFood(@PathVariable Integer id, @RequestBody FoodDto foodDto) {
 
 		Food food = foodService.updateFood(id, foodDto);
-		return new ResponseEntity<Food>(food, HttpStatus.OK);
+		return new ResponseEntity<>(food, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Food> deleteFood(@PathVariable Integer id) {
 
 		Food food = foodService.deleteFood(id);
-		return new ResponseEntity<Food>(food, HttpStatus.OK);
+		return new ResponseEntity<>(food, HttpStatus.OK);
 	}
 
 }

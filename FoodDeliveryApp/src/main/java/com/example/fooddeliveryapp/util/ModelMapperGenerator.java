@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 
 public class ModelMapperGenerator {
 	
-	public static ModelMapper modelMapper; 
+	static ModelMapper modelMapper;
 	
 	private ModelMapperGenerator() {
 	}
