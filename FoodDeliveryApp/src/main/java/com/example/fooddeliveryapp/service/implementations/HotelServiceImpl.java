@@ -42,11 +42,6 @@ public class HotelServiceImpl implements IHotelService {
 		this.hotelConvertor = hotelConvertor;
 	}
 
-	@Autowired
-	public void setFoodRepository(IFoodRepository foodRepository) {
-		this.foodRepository = foodRepository;
-	}
-
 	@Override
 	public Hotel createHotel(HotelDto hotelDto) {
 
@@ -85,8 +80,7 @@ public class HotelServiceImpl implements IHotelService {
 		if (optionalHotel.isEmpty())
 			throw new HotelNotFoundException("Hotel not found.");
 
-		Hotel hotel = hotelRepository.findById(id).get().setName(hotelDto.getName())
-				.setCuisine(hotelDto.getCuisine());
+		Hotel hotel = hotelRepository.findById(id).get().setName(hotelDto.getName()).setCuisine(hotelDto.getCuisine());
 
 		return hotelRepository.save(hotel);
 	}

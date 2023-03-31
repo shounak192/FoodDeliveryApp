@@ -4,7 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+import java.util.Collections;
 import java.util.Optional;
+
+import javax.validation.ConstraintViolationException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +17,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.data.domain.Example;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.fooddeliveryapp.dto.CustomerDto;
 import com.example.fooddeliveryapp.exceptions.CustomerNotFoundException;
@@ -22,6 +26,7 @@ import com.example.fooddeliveryapp.exceptions.DuplicateCustomerException;
 import com.example.fooddeliveryapp.models.Customer;
 import com.example.fooddeliveryapp.repository.ICustomerRepository;
 import com.example.fooddeliveryapp.service.implementations.CustomerServiceImpl;
+import com.example.fooddeliveryapp.util.ObjectsValidator;
 import com.example.fooddeliveryapp.util.convertor.CustomerConvertor;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,14 +46,17 @@ class CustomerServiceTest {
 
 	private Customer customer;
 
-	private Example<Customer> exampleCustomer;
+	private Optional<Customer> optionalCustomer;
+
+	private UserDetails user;
 
 	@BeforeEach
 	void setup() {
 		customerDto = new CustomerDto("username", "password");
 		customerDto.setId(1);
 		customer = new Customer("username", "password");
-		exampleCustomer = Example.of(customer);
+		optionalCustomer = Optional.ofNullable(customer);
+		user = new User(customer.getUsername(), customer.getPassword(), Collections.emptyList());
 		when(customerConvertor.convert(customerDto)).thenReturn(customer);
 	}
 
@@ -62,22 +70,40 @@ class CustomerServiceTest {
 	@Test
 	void InvalidRegisterCustomerTest() {
 
-		when(customerRepository.findOne(exampleCustomer)).thenReturn(Optional.ofNullable(customer));
+		when(customerRepository.findByUsername(customerDto.getUsername())).thenReturn(optionalCustomer);
 		assertThrows(DuplicateCustomerException.class, () -> customerService.registerCustomer(customerDto));
-	}
-
-	@Test
-	void loginCustomerTest() {
-
-		when(customerRepository.findOne(exampleCustomer)).thenReturn(Optional.ofNullable(customer));
-		assertEquals(customer, customerService.loginCustomer(customerDto));
 	}
 
 	@Test
 	void InvalidLoginCustomerTest() {
 
-		when(customerRepository.findOne(exampleCustomer)).thenReturn(Optional.ofNullable(null));
+		when(customerRepository.findByUsername(customer.getUsername())).thenReturn(Optional.ofNullable(null));
 		assertThrows(CustomerNotFoundException.class, () -> customerService.loginCustomer(customerDto));
+	}
+
+	@Test
+	void findCustomerByUsernameTest() {
+		when(customerRepository.findByUsername(customer.getUsername())).thenReturn(optionalCustomer);
+		assertEquals(optionalCustomer, customerService.findCustomerByUsername(customer.getUsername()));
+	}
+
+	@Test
+	void InvalidFindCustomerByUsernameTest() {
+		when(customerRepository.findByUsername(customer.getUsername())).thenReturn(Optional.ofNullable(null));
+		assertThrows(CustomerNotFoundException.class,
+				() -> customerService.findCustomerByUsername(customer.getUsername()));
+	}
+
+	@Test
+	void loadUserByUsernameTest() {
+		when(customerRepository.findByUsername(customer.getUsername())).thenReturn(optionalCustomer);
+		assertEquals(user, customerService.loadUserByUsername(customer.getUsername()));
+	}
+
+	@Test
+	void InvalidLoadUserByUsernameTest() {
+		when(customerRepository.findByUsername(customer.getUsername())).thenReturn(Optional.ofNullable(null));
+		assertThrows(CustomerNotFoundException.class, () -> customerService.loadUserByUsername(customer.getUsername()));
 	}
 
 }

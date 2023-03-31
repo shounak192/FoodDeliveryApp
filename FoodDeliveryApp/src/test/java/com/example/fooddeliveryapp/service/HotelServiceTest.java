@@ -20,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.example.fooddeliveryapp.dto.FoodDto;
 import com.example.fooddeliveryapp.dto.HotelDto;
+import com.example.fooddeliveryapp.exceptions.FoodNotFoundException;
 import com.example.fooddeliveryapp.exceptions.HotelNotFoundException;
 import com.example.fooddeliveryapp.models.Food;
 import com.example.fooddeliveryapp.models.Hotel;
@@ -104,6 +105,12 @@ class HotelServiceTest {
 		when(hotelRepository.save(hotel)).thenReturn(hotel);
 		assertEquals(hotel, hotelService.updateHotel(1, hotelDto));
 	}
+	
+	@Test
+	void InvalidUpdateHotelTest() {
+		when(hotelRepository.findById(2)).thenReturn(Optional.ofNullable(null));
+		assertThrows(HotelNotFoundException.class, ()->hotelService.updateHotel(1, hotelDto));
+	}
 
 	@Test
 	void deleteHotelTest() {
@@ -126,6 +133,20 @@ class HotelServiceTest {
 		when(foodRepository.findById(1)).thenReturn(Optional.ofNullable(food));
 		assertEquals(hotel, hotelService.addFood(1, 1));
 	}
+	
+	@Test
+	void InvalidHotelAddFoodTest() {
+
+		when(hotelRepository.findById(2)).thenReturn(Optional.ofNullable(null));
+		assertThrows(HotelNotFoundException.class, ()->hotelService.addFood(2, 1));
+	}
+	
+	@Test
+	void InvalidFoodAddFoodTest() {
+		when(hotelRepository.findById(1)).thenReturn(Optional.ofNullable(hotel));
+		when(foodRepository.findById(2)).thenReturn(Optional.ofNullable(null));
+		assertThrows(FoodNotFoundException.class, ()->hotelService.addFood(1, 2));
+	}
 
 	@Test
 	void removeFoodTest() {
@@ -133,6 +154,19 @@ class HotelServiceTest {
 		when(hotelRepository.findById(1)).thenReturn(Optional.ofNullable(hotel));
 		when(foodRepository.findById(1)).thenReturn(Optional.ofNullable(food));
 		assertEquals(hotel, hotelService.removeFood(1, 1));
+	}
+	
+	@Test
+	void InvalidHotelRemoveFoodTest() {
+		when(hotelRepository.findById(2)).thenReturn(Optional.ofNullable(null));
+		assertThrows(HotelNotFoundException.class, ()->hotelService.removeFood(2, 1));
+	}
+	
+	@Test
+	void InvalidFoodRemoveFoodTest() {
+		when(hotelRepository.findById(1)).thenReturn(Optional.ofNullable(hotel));
+		when(foodRepository.findById(2)).thenReturn(Optional.ofNullable(null));
+		assertThrows(FoodNotFoundException.class, ()->hotelService.removeFood(1, 2));
 	}
 	
 	@Test

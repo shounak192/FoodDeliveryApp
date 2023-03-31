@@ -22,6 +22,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.fooddeliveryapp.dto.FoodDto;
@@ -85,6 +87,7 @@ class HotelControllerTest {
 	}
 
 	@Test
+	@WithMockUser
 	void viewHotelTest() throws Exception {
 
 		when(hotelService.viewHotel(1)).thenReturn(hotel);
@@ -92,6 +95,7 @@ class HotelControllerTest {
 	}
 
 	@Test
+	@WithMockUser
 	void viewAllHotelsTest() throws Exception {
 
 		when(hotelService.viewAllHotels()).thenReturn(hotelList);
@@ -99,6 +103,7 @@ class HotelControllerTest {
 	}
 
 	@Test
+	@WithMockUser
 	void updateHotelTest() throws Exception {
 
 		when(hotelService.updateHotel(1, hotelDto)).thenReturn(hotel);
@@ -107,12 +112,14 @@ class HotelControllerTest {
 	}
 
 	@Test
+	@WithMockUser
 	void deleteHotelTest() throws Exception {
 		when(hotelService.deleteHotel(1)).thenReturn(hotel);
 		mockMvc.perform(delete("/hotel/delete/{id}", 1)).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithMockUser
 	void addFoodTest() throws Exception {
 
 		when(hotelService.addFood(1, 1)).thenReturn(hotel);
@@ -120,13 +127,15 @@ class HotelControllerTest {
 	}
 
 	@Test
+	@WithMockUser
 	void removeFoodTest() throws Exception {
-		
-		when(hotelService.removeFood(1,1)).thenReturn(hotel);
-		mockMvc.perform(delete("/hotel/removefood/{hotelId}/{foodId}", 1,1)).andExpect(status().isOk());
+
+		when(hotelService.removeFood(1, 1)).thenReturn(hotel);
+		mockMvc.perform(delete("/hotel/removefood/{hotelId}/{foodId}", 1, 1)).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithMockUser
 	void findAllHotelsByCuisineType() throws Exception {
 		when(hotelService.findAllHotelsByCuisine("cuisine")).thenReturn(hotelList);
 		mockMvc.perform(get("/hotel/viewall/{cuisineType}", "cuisine")).andExpect(status().isOk());

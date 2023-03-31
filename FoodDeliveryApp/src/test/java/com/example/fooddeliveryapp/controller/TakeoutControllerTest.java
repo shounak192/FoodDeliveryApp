@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,6 +22,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.fooddeliveryapp.dto.TakeoutDto;
@@ -52,38 +54,44 @@ class TakeoutControllerTest {
 		this.objectMapper = objectMapper;
 	}
 
+	@BeforeEach
 	public void setup() {
 		takeoutDto = new TakeoutDto(1, 1, 1);
 		takeout = new Takeout(1, 1, 1);
 	}
 
 	@Test
+	@WithMockUser
 	void placeOrderTest() throws Exception {
 		when(takeoutService.placeOrder(takeoutDto)).thenReturn(takeout);
 		mockMvc.perform(post("/takeout/place").contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(takeout))).andDo(print());
+				.content(objectMapper.writeValueAsString(takeoutDto))).andExpect(status().isOk());
 
 	}
 
 	@Test
+	@WithMockUser
 	void cancelOrdertTest() throws Exception {
 		when(takeoutService.cancelOrder(1)).thenReturn(takeout);
 		mockMvc.perform(delete("/takeout/cancel/{id}", 1)).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithMockUser
 	void viewOrderTest() throws Exception {
 		when(takeoutService.viewOrder(1)).thenReturn(takeout);
 		mockMvc.perform(get("/takeout/view/{id}", 1)).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithMockUser
 	void viewAllOrdersTest() throws Exception {
 		when(takeoutService.viewAllOrders()).thenReturn(takeoutList);
 		mockMvc.perform(get("/takeout/viewall")).andExpect(status().isOk());
 	}
 
 	@Test
+	@WithMockUser
 	void viewAllOrdersByCustomerTest() throws Exception {
 		when(takeoutService.viewAllOrdersByCustomer(1)).thenReturn(takeoutList);
 		mockMvc.perform(get("/takeout/viewall/{customerId}", 1)).andExpect(status().isOk());

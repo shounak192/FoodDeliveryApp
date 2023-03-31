@@ -10,6 +10,11 @@ import javax.validation.ValidatorFactory;
 
 import org.springframework.stereotype.Component;
 
+/*
+ * Objects validator class is used to validate each field in Entity. Call the validate() method of this class inside
+ * each service, pass the object to validate & it'll return Set of Validation violations that the Entity has,
+ * or an Empty Set if Entity has no violations.
+ */
 @Component
 public class ObjectsValidator<T> {
 
@@ -19,10 +24,10 @@ public class ObjectsValidator<T> {
 	public Set<ConstraintViolation<T>> validate(T objectToValidate) {
 
 		Set<ConstraintViolation<T>> violations = validator.validate(objectToValidate);
-		if(!violations.isEmpty()) {
+		if (!violations.isEmpty()) {
 			return violations;
 		}
-		
+
 		return Collections.emptySet();
 	}
 
