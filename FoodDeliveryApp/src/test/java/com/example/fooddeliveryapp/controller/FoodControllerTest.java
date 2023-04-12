@@ -17,7 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.fooddeliveryapp.dto.FoodDto;
@@ -66,21 +65,21 @@ class FoodControllerTest {
 	}
 	
 	@Test
-	@WithMockUser
+//	@WithMockUser
 	void viewFoodTest() throws Exception {
 		when(foodService.viewFood(1)).thenReturn(food);
 		mockMvc.perform(get("/food/view/{id}",1)).andExpect(status().isOk());
 	}
 	
 	@Test
-	@WithMockUser
+//	@WithMockUser
 	void viewAllFoodTest() throws Exception {
 		when(foodService.viewAllFoods()).thenReturn(foodList);
 		mockMvc.perform(get("/food/viewall")).andExpect(status().isOk());
 	}
 	
 	@Test
-	@WithMockUser
+//	@WithMockUser
 	void updateFoodTest() throws Exception {
 		when(foodService.updateFood(1, foodDto)).thenReturn(food);
 		mockMvc.perform(put("/food/update/{id}",1).contentType(MediaType.APPLICATION_JSON)
@@ -88,7 +87,7 @@ class FoodControllerTest {
 	}
 	
 	@Test
-	@WithMockUser
+//	@WithMockUser
 	void deleteFoodTest() throws Exception {
 		when(foodService.deleteFood(1)).thenReturn(food);
 		mockMvc.perform(delete("/food/delete/{id}",1)).andExpect(status().isOk());
