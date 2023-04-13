@@ -2,6 +2,7 @@ package com.example.fooddeliveryadmin.feignclient;
 
 import java.util.List;
 
+import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,7 @@ import com.example.fooddeliveryadmin.service.implementations.FoodDeliveryService
  * instead directly from its hardcoded url.
  */
 @FeignClient(name = "fooddelivery-app", fallback = FoodDeliveryServiceImpl.class)
+@LoadBalancerClient(name="fooddelivery-app", configuration = FoodDeliveryServiceImpl.class)
 public interface IFoodDeliveryClient {
 
 	@PostMapping("/food/create")
