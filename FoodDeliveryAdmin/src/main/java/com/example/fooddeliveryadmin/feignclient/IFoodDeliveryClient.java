@@ -24,7 +24,13 @@ import com.example.fooddeliveryadmin.service.implementations.FoodDeliveryService
  * instead directly from its hardcoded url.
  */
 @FeignClient(name = "fooddelivery-app", fallback = FoodDeliveryServiceImpl.class)
-@LoadBalancerClient(name="fooddelivery-app", configuration = FoodDeliveryServiceImpl.class)
+
+/*
+ * LoadBalancerClient gets multiple running instances of the same
+ * fooddelivery-app from Eureka Discovery Server & based on its default
+ * configurations, it reroutes to the instances.
+ */
+@LoadBalancerClient(name = "fooddelivery-app", configuration = FoodDeliveryServiceImpl.class)
 public interface IFoodDeliveryClient {
 
 	@PostMapping("/food/create")
