@@ -7,6 +7,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 

@@ -27,6 +27,9 @@ public class Hotel {
 	/*
 	 * @JsonProperty-Write Only access allows to print only necessary hotel details
 	 * without its underlying food list of each hotel.
+	 * 
+	 * @JsonManagedReference in Hotel & @JsonBackReference in Food removes the
+	 * Hotel->Food cyclic dependency.
 	 */
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@JsonManagedReference
